@@ -1,8 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -10,15 +8,19 @@ import {PostComponent} from "../components/post/post";
 import {SubredditPage} from "../pages/subreddit/subreddit";
 import {Post} from "../providers/post";
 import {Md} from "../pipes/md";
-
+import {ImageModalComponent} from "../components/image-modal/image-modal";
+import {VideoModalComponent} from "../components/video-modal/video-modal";
+import {Safe} from "../pipes/safe";
+import {InAppBrowser} from "@ionic-native/in-app-browser";
 @NgModule({
   declarations: [
     MyApp,
-    Page1,
-    Page2,
     SubredditPage,
     PostComponent,
-    Md
+    Md,
+    Safe,
+    ImageModalComponent,
+    VideoModalComponent,
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -26,14 +28,15 @@ import {Md} from "../pipes/md";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    Page1,
-    Page2,
-    SubredditPage
+    SubredditPage,
+    ImageModalComponent,
+    VideoModalComponent
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Post,
+    InAppBrowser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

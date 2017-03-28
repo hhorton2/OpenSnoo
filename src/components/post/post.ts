@@ -1,4 +1,7 @@
 import {Component, Input} from '@angular/core';
+import {ModalController} from "ionic-angular";
+import {ImageModalComponent} from "../image-modal/image-modal";
+import {VideoModalComponent} from "../video-modal/video-modal";
 
 /*
   Generated class for the Post component.
@@ -12,23 +15,37 @@ import {Component, Input} from '@angular/core';
 })
 export class PostComponent {
   @Input() posts: any[] = [];
+  imageExtensions: string[] = [".jpg", ".jpeg", ".png", ".gif", ".svg", ".bmp", ".tiff"];
 
-  constructor() {
+  constructor(public modalCtrl: ModalController) {
   }
 
   getPostSourceThumbnail(post: any): string{
-    // post = post.data;
-    // if(post.hasOwnProperty("preview")){
-    //   post = post.preview;
-    //   if(post.hasOwnProperty("images")){
-    //     post = post.images[0];
-    //   }if(post.hasOwnProperty("resolutions")){
-    //     return post.resolutions[0].url;
-    //   }
-    // }
-    // return "";
-    console.log(post.data.thumbnail);
     return post.data.thumbnail;
+  }
+
+  showFullscreenImage(post: any){
+    let imageModal = this.modalCtrl.create(ImageModalComponent, { url : post.data.url });
+    imageModal.present();
+  }
+
+  showFullscreenVideo(post: any){
+    let videoModal = this.modalCtrl.create(VideoModalComponent, { url : post.data.url });
+    videoModal.present();
+  }
+
+  determineTypeAndLoad(post: any){
+    let foundImage = false;
+    this.imageExtensions.forEach(type =>{
+      if((post.data.url + "" ).endsWith(type)){
+        foundImage = true;
+      }
+    });
+    if(foundImage){
+      this.showFullscreenImage(post);
+    }else{
+      this.showFullscreenVideo(post);
+    }
   }
 
 }

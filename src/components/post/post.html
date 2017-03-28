@@ -1,7 +1,8 @@
 <div *ngFor="let post of posts">
   <ion-card>
-    <ion-grid *ngIf="post.data.thumbnail != 'default' && post.data.thumbnail != 'self' && post.data.thumbnail != 'image'">
-      <ion-row justify-content-center>
+    <ion-grid
+      *ngIf="post.data.thumbnail != 'default' && post.data.thumbnail != 'self' && post.data.thumbnail != 'image'">
+      <ion-row justify-content-center (tap)="determineTypeAndLoad(post)">
         <ion-col col-8>
           <img [src]="getPostSourceThumbnail(post)">
         </ion-col>
@@ -13,22 +14,29 @@
       </ion-row>
     </ion-grid>
     <ion-grid *ngIf="post.data.thumbnail == 'image'">
-      <ion-row justify-content-center>
+      <ion-row justify-content-center (tap)="determineTypeAndLoad(post)">
         <ion-col col-8>
           <img [src]="post.data.url">
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row (tap)="determineTypeAndLoad(post)">
         <ion-card-content text-wrap style="font-size: 1em; font-weight: bold">
           {{post.data.title | md}}
         </ion-card-content>
       </ion-row>
     </ion-grid>
-    <ion-card-content *ngIf="post.data.thumbnail == 'default' || post.data.thumbnail == 'self'" text-wrap style="font-size: 1em; font-weight: bold">
+    <ion-card-content *ngIf="post.data.thumbnail == 'default' || (post.data.domain + '').includes('reddit.com')"
+                      (tap)="determineTypeAndLoad(post)" text-wrap style="font-size: 1em; font-weight: bold">
       {{post.data.title | md}}
     </ion-card-content>
+
+    <ion-card-content *ngIf="post.data.thumbnail == 'self'" text-wrap style="font-size: 1em; font-weight: bold">
+      {{post.data.title | md}}
+    </ion-card-content>
+
     <ion-card-content>
-      {{post.data.score + " | " + post.data.subreddit + " | " + post.data.author}}
+      {{post.data.score + " | " + post.data.num_comments + " comments | " + post.data.subreddit + " | " +
+      post.data.author}}
     </ion-card-content>
   </ion-card>
 </div>
